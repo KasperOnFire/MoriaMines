@@ -53,18 +53,22 @@ public class Player {
     }
 
     public void goNorth() {
+        getCurrentRoom().setRoomSeen(true);
         currentRoom = currentRoom.getRoomN();
     }
 
     public void goSouth() {
+        getCurrentRoom().setRoomSeen(true);
         currentRoom = currentRoom.getRoomS();
     }
 
     public void goEast() {
+        getCurrentRoom().setRoomSeen(true);
         currentRoom = currentRoom.getRoomE();
     }
 
     public void goWest() {
+        getCurrentRoom().setRoomSeen(true);
         currentRoom = currentRoom.getRoomW();
     }
 

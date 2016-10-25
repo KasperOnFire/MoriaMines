@@ -12,7 +12,6 @@ public class GameControl {
     }
 
     Scanner input = new Scanner(System.in);
-
     boolean endGame = false;
 
     public void gameSetup() {
@@ -27,11 +26,18 @@ public class GameControl {
         while (endGame == false) {
             String cmd = input.nextLine().toLowerCase();
             switch (cmd) {
+                case "room":
+                case "roomdesc":
+                case "description":
+                case "room description":
+                case "look around":
+                    printRoomDesc();
+                    break;
                 case "n":
                 case "north":
                     if (p.getCurrentRoom().getRoomN() != null) {
                         p.goNorth();
-                        System.out.println(p.getCurrentRoom().getRoomDesc());
+                        printRoomDesc();
                         break;
                     } else {
                         System.out.println("The stone wall does not allow for passage this way through.");
@@ -41,7 +47,7 @@ public class GameControl {
                 case "south":
                     if (p.getCurrentRoom().getRoomS() != null) {
                         p.goSouth();
-                        System.out.println(p.getCurrentRoom().getRoomDesc());
+                        printRoomDesc();
                         break;
                     } else {
                         System.out.println("A grey, rocky wall stands here. No way through.");
@@ -51,7 +57,7 @@ public class GameControl {
                 case "east":
                     if (p.getCurrentRoom().getRoomE() != null) {
                         p.goEast();
-                        System.out.println(p.getCurrentRoom().getRoomDesc());
+                        printRoomDesc();
                         break;
                     } else {
                         System.out.println("You searh the rocky wall, but find no way on.");
@@ -61,7 +67,7 @@ public class GameControl {
                 case "west":
                     if (p.getCurrentRoom().getRoomW() != null) {
                         p.goWest();
-                        System.out.println(p.getCurrentRoom().getRoomDesc());
+                        printRoomDesc();
                         break;
                     } else {
                         System.out.println("There is only a brick wall here.");
@@ -79,7 +85,7 @@ public class GameControl {
                         break;
                     }
                 case "use":
-                    System.out.println("Inventory:\n");
+                    System.out.println("Inventory:");
                     for (Item i : p.inv) {
                         System.out.println(i.getItemDesc());
                     }
@@ -88,7 +94,7 @@ public class GameControl {
                     break;
                 case "equipped":
                 case "equip":
-                    System.out.println("Inventory:\n");
+                    System.out.println("Inventory:");
                     for (Item i : p.inv) {
                         System.out.println(i.getItemDesc());
                     }
@@ -97,7 +103,7 @@ public class GameControl {
                     break;
                 case "items":
                 case "item":
-                    System.out.println("Inventory:\n");
+                    System.out.println("Inventory:");
                     for (Item i : p.inv) {
                         System.out.println(i.getItemDesc());
                     }
@@ -124,8 +130,6 @@ public class GameControl {
                     System.out.println("");
                     endGame = true;
                     break;
-                case "room":
-                    System.out.println(p.getCurrentRoom().getRoomDesc());
                 case "help":
                     System.out.println("List of commands:");
                     System.out.println("use: puts you in to use use mode. Write \"use\", press enter, then write the item you'd like to use.");
@@ -162,12 +166,30 @@ public class GameControl {
 
     }
 
+    public void printRoomDesc() {
+        if (p.getCurrentRoom().isRoomSeen() == true) {
+            System.out.println(p.getCurrentRoom().getRoomDescSeen());
+        } else {
+            System.out.println(p.getCurrentRoom().getRoomDesc());
+        }
+    }
+
     public void equipCommand() {
         String item = input.nextLine().toLowerCase();
         switch (item) {
             case "wooden sword":
                 for (Item i : p.inv) {
                     if (i.getItemDesc().toLowerCase().equals("wooden sword")) {
+                        if (i instanceof Sword) {
+                            Sword mySword = (Sword) i;
+                            p.setPlayerDmg(mySword.weaponDmg);
+                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + p.getPlayerDmg());
+                        }
+                    }
+                }
+            case "steel sword":
+                for (Item i : p.inv) {
+                    if (i.getItemDesc().toLowerCase().equals("steel sword")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
                             p.setPlayerDmg(mySword.weaponDmg);
@@ -207,14 +229,18 @@ public class GameControl {
     public void createMap() {
         Room r1 = new Room(0);
         r1.setRoomDesc("You walk into the mines, in to the entrance. There is a hallway to the north. There is a wooden sword in the corner.");
+        r1.setRoomDescSeen("You go back to the entrance of the mine.\nThere is a a hallway to the north.");
         r1.setRoomItem(new Sword("wooden sword", 5, "sword"));
         Room r2 = new Room(randomGold());
         r2.setRoomDesc("You walk into the hallway. At the end, there is a small room. In of the corners lie roomGold gold pieces.");
+        r2.setRoomDescSeen("You go back in to the hallway. There is a small room at the end.");
         Room r3 = new Room(0);
-        r3.setRoomDesc("A bunch broken tools lies in the middle of the room. Nothing of value, except a health potion.");
-        r3.setRoomItem(new Potion("health potion", 30));
+        r3.setRoomDesc("A bunch broken tools lies in the middle of the cornerroom. Amidst the pile there is a rusty pickaxe.");
+        r3.setRoomDescSeen("You walk back into the corner room. There is some broken tools in the middle of the room. Nothing of value.");
+        r3.setRoomItem(new Sword("rusty pickaxe", 7, "axe"));
         Room r4 = new Room(randomGold());
-        r4.setRoomDesc("a broken down minecart stands here. In it lies a dead dwarf. You search his pockets, and find roomGold gold pieces in the pockets.");
+        r4.setRoomDesc("a broken down minecart stands here. In it lies a dead dwarf. You search his pockets, and find roomGold gold pieces  and a healing potion in his pockets.");
+        r4.setRoomItem(new Potion("health potion", 30));
         Room r5 = new Room(randomGold());
         r5.setRoomDesc("Some rats run away as you enter the room. On the wall hangs a davy lamp. Something on the floor glimmers in the light of the lamp.");
         Room r6 = new Room(0);
@@ -322,6 +348,6 @@ public class GameControl {
         r20.setRoomS(r19);
 
         p.setCurrentRoom(r1);
+        p.getCurrentRoom().setRoomSeen(true);
     }
-
 }

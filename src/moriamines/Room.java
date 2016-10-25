@@ -3,9 +3,11 @@ package moriamines;
 public class Room {
 
     private String roomDesc = "";
+    private String roomDescSeen = "";
     private int roomGold = 0;
     private boolean roomExit = false;
     private Item roomItem;
+    private boolean roomSeen = false;
 
     private Room RoomN = null;
     private Room RoomS = null;
@@ -14,6 +16,14 @@ public class Room {
 
     public Room(int Gold) {
         roomGold = Gold;
+    }
+
+    public void setRoomSeen(boolean roomSeen) {
+        this.roomSeen = roomSeen;
+    }
+
+    public boolean isRoomSeen() {
+        return roomSeen;
     }
 
     public boolean isRoomExit() {
@@ -30,6 +40,14 @@ public class Room {
 
     public void setRoomDesc(String roomDesc) {
         this.roomDesc = roomDesc;
+    }
+
+    public String getRoomDescSeen() {
+        return roomDescSeen.replace("roomGold", "" + roomGold);
+    }
+
+    public void setRoomDescSeen(String roomDesc) {
+        this.roomDescSeen = roomDesc;
     }
 
     public int getRoomGold() {
@@ -75,7 +93,7 @@ public class Room {
     public Item getRoomItem() {
         return roomItem;
     }
-    
+
     public String getRoomItemDesc() {
         return roomItem.getItemDesc();
     }
