@@ -197,6 +197,16 @@ public class GameControl {
                         }
                     }
                 }
+            case "rusty pickaxe":
+                for (Item i : p.inv) {
+                    if (i.getItemDesc().toLowerCase().equals("rusty pickaxe")) {
+                        if (i instanceof Sword) {
+                            Sword mySword = (Sword) i;
+                            p.setPlayerDmg(mySword.weaponDmg);
+                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + p.getPlayerDmg());
+                        }
+                    }
+                }
         }
     }
 
