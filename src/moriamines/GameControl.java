@@ -1,28 +1,35 @@
 package moriamines;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameControl {
-    
+
     Player p = new Player();
-    
+
     public Player getP() {
         return p;
     }
-    
+
     Scanner input = new Scanner(System.in);
     boolean endGame = false;
-    
+
     public void gameSetup() {
         createPlayer();
         createMap();
     }
-    
+
     public void gameRun() {
         System.out.println("Starting game!");
         System.out.println(p.getCurrentRoom().getRoomDesc());
-        
+
         while (endGame == false) {
             String cmd = input.nextLine().toLowerCase();
             switch (cmd) {
@@ -152,20 +159,25 @@ public class GameControl {
                 endGame = true;
             }
         }
-        
+
         System.out.println("Game Over!");
         System.out.println("you had " + p.getPlayerGold() + " Gold.");
+        try {
+            writeToFile();
+        } catch (IOException ex) {
+            Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("Thank you for playing Mines of Moria!");
     }
-    
+
     public void createPlayer() {
         System.out.println("What is your name?");
         p.setPlayerName(input.nextLine());
         p.setPlayerGold(0);
         p.setPlayerHealth(100);
-        
+
     }
-    
+
     public void printRoomDesc() {
         if (p.getCurrentRoom().isRoomSeen() == true) {
             System.out.println(p.getCurrentRoom().getRoomDescSeen());
@@ -173,7 +185,7 @@ public class GameControl {
             System.out.println(p.getCurrentRoom().getRoomDesc());
         }
     }
-    
+
     public void equipCommand() {
         String item = input.nextLine().toLowerCase();
         switch (item) {
@@ -239,7 +251,7 @@ public class GameControl {
                 }
         }
     }
-    
+
     public void useCommand() {
         String use = input.nextLine().toLowerCase();
         switch (use) {
@@ -284,11 +296,11 @@ public class GameControl {
                 }
         }
     }
-    
+
     public int randomGold() {
         return ThreadLocalRandom.current().nextInt(1, 30 + 1);
     }
-    
+
     public void createMap() {
         Room r1 = new Room(0);
         r1.setRoomDesc("You walk into the mines, in to the entrance. There is a hallway to the north. There is a wooden sword in the corner.");
@@ -361,77 +373,90 @@ public class GameControl {
         Room r21 = new Room(0);
         r21.setRoomDesc("You walk out of the dungeon, and back to the city.");
         r21.setRoomExit(true);
-        
+
         r1.setRoomN(r2);
         r1.setRoomS(r21);
-        
+
         r2.setRoomN(r4);
         r2.setRoomW(r3);
         r2.setRoomE(r5);
         r2.setRoomS(r1);
-        
+
         r3.setRoomE(r2);
         r3.setRoomN(r6);
-        
+
         r4.setRoomN(r9);
         r4.setRoomW(r6);
         r4.setRoomS(r2);
-        
+
         r5.setRoomN(r7);
         r5.setRoomW(r2);
-        
+
         r6.setRoomN(r8);
         r6.setRoomE(r4);
         r6.setRoomS(r3);
-        
+
         r7.setRoomN(r10);
         r7.setRoomS(r5);
-        
+
         r8.setRoomN(r15);
         r8.setRoomW(r12);
         r8.setRoomE(r9);
         r8.setRoomS(r6);
-        
+
         r9.setRoomW(r8);
         r9.setRoomS(r4);
         r9.setRoomE(r10);
-        
+
         r10.setRoomN(r17);
         r10.setRoomW(r9);
         r10.setRoomS(r7);
         r10.setRoomE(r11);
-        
+
         r11.setRoomW(r10);
         r11.setRoomN(r14);
-        
+
         r12.setRoomE(r8);
-        
+
         r13.setRoomS(r18);
-        
+
         r14.setRoomS(r11);
-        
+
         r15.setRoomN(r18);
         r15.setRoomS(r8);
         r15.setRoomE(r16);
-        
+
         r16.setRoomN(r19);
         r16.setRoomW(r15);
         r16.setRoomE(r17);
-        
+
         r17.setRoomW(r16);
         r17.setRoomS(r10);
-        
+
         r18.setRoomN(r13);
         r18.setRoomS(r15);
         r18.setRoomE(r19);
-        
+
         r19.setRoomN(r20);
         r19.setRoomW(r18);
         r19.setRoomS(r16);
-        
+
         r20.setRoomS(r19);
-        
+
         p.setCurrentRoom(r1);
         p.getCurrentRoom().setRoomSeen(true);
+    }
+
+    public void writeToFile() throws FileNotFoundException, IOException {
+        String text = "Player " + p.getPlayerName() + " Earned " + p.getPlayerGold() + " gold";
+        try {
+            // Files.write(Paths.get("highscore.txt"), text.getBytes(), StandardOpenOption.APPEND);
+            PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
+        } catch (FileNotFoundException fnf) {
+            PrintWriter out = new PrintWriter("highscore.txt");
+            out.println(text);
+            out.close();
+        }
+        System.out.println("A highscore file has been saved in GameDirectory\\highscore.txt.");
     }
 }

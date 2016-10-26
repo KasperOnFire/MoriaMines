@@ -1,10 +1,8 @@
 package moriamines;
 
-import java.io.IOException;
-
 public class MoriaMines {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         GameControl gc = new GameControl();
 
         System.out.println("Welcome to the Mines of Moria!");
