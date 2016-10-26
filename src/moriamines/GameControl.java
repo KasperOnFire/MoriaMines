@@ -447,8 +447,8 @@ public class GameControl {
         p.getCurrentRoom().setRoomSeen(true);
     }
 
-    public void writeToFile() throws FileNotFoundException, IOException {
-        String text = "Player " + p.getPlayerName() + " Earned " + p.getPlayerGold() + " gold";
+    public void writeToFile() throws FileNotFoundException {
+        String text = "Player " + p.getPlayerName() + " Earned " + p.getPlayerGold() + " gold"; //evt add monsters killed senere
         try {
             PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
             pw.println(text);
