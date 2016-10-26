@@ -450,9 +450,10 @@ public class GameControl {
     public void writeToFile() throws FileNotFoundException, IOException {
         String text = "Player " + p.getPlayerName() + " Earned " + p.getPlayerGold() + " gold";
         try {
-            // Files.write(Paths.get("highscore.txt"), text.getBytes(), StandardOpenOption.APPEND);
             PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
-        } catch (FileNotFoundException fnf) {
+            pw.println(text);
+            pw.close();
+        } catch (FileNotFoundException f) {
             PrintWriter out = new PrintWriter("highscore.txt");
             out.println(text);
             out.close();
