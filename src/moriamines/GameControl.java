@@ -179,7 +179,7 @@ public class GameControl {
     }
 
     public void printRoomDesc() {
-        if (p.getCurrentRoom().isRoomSeen() == true) {
+        if (p.getCurrentRoom().isRoomSeen()) {
             System.out.println(p.getCurrentRoom().getRoomDescSeen());
         } else {
             System.out.println(p.getCurrentRoom().getRoomDesc());
