@@ -22,10 +22,11 @@ public class Room {
     }
 
     public void enterRoom(Player pl) {
-        if (roomMonster == null) {
+        if (roomMonster != null) {
+            Combat c = new Combat(pl, roomMonster);
+            c.startCombat();
             printRoomDesc();
         } else {
-            new Combat(pl, roomMonster);
             printRoomDesc();
         }
     }

@@ -6,8 +6,8 @@ public class Combat {
 
     private Player p;
     private Monster m;
-    private boolean combat;
-   // Scanner input = new Scanner(System.in);
+    private boolean combat = false;
+    // Scanner input = new Scanner(System.in);
 
     public Combat(Player pl, Monster mo) {
         p = pl;
@@ -28,7 +28,7 @@ public class Combat {
 
     public void monsterTurn() {
         System.out.println("The monster attacks you.");
-        System.out.println("it hits you for " + m.getMonsterDmg());
+        System.out.println("it hits you for " + m.getMonsterDmg() + ".");
         p.setPlayerHealth(p.getPlayerHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
         if (p.getPlayerHealth() > 0) {
             System.out.println("You have " + p.getPlayerHealth() + " Health left!");
@@ -42,10 +42,10 @@ public class Combat {
     public void playerTurn() {
         System.out.println("You attack the monster!");
         if (p.getPlayerDmg() > 2) {
-            System.out.println("You swing your weapon for " + p.getPlayerDmg() + " damage");
+            System.out.println("You swing your weapon for " + p.getPlayerDmg() + " damage.");
             m.setMonsterHealth((m.getMonsterHealth() - p.getPlayerDmg()));
         } else {
-            System.out.println("You punch the monster for " + p.getPlayerDmg() + " damage");
+            System.out.println("You punch the monster for " + p.getPlayerDmg() + " damage.");
             m.setMonsterHealth((m.getMonsterHealth() - p.getPlayerDmg()));
         }
         if (m.getMonsterHealth() > 0) {

@@ -293,7 +293,7 @@ public class GameControl {
         }
     }
 
-    public int randomGold() {
+    private int randomGold() {
         return ThreadLocalRandom.current().nextInt(1, 30 + 1);
     }
 
