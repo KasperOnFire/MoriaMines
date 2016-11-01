@@ -1,4 +1,6 @@
-package moriamines;
+package moriamines.Items;
+
+import moriamines.GameControl;
 
 public class Item {
 

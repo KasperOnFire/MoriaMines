@@ -1,4 +1,4 @@
-package moriamines;
+package moriamines.Items;
 
 public class Potion extends Item {
 
@@ -19,8 +19,8 @@ public class Potion extends Item {
         } else {
             gc.getP().setPlayerHealth((gc.getP().getPlayerHealth() + restoreHealth));
         }
-        gc.p.inv.remove(i);
-        System.out.println("You now have " + gc.p.getPlayerHealth() + " health.");
+        gc.getP().getInv().remove(i);
+        System.out.println("You now have " + gc.getP().getPlayerHealth() + " health.");
 
     }
 

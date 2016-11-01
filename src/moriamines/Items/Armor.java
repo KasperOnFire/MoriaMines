@@ -1,4 +1,4 @@
-package moriamines;
+package moriamines.Items;
 
 public class Armor extends Item {
 

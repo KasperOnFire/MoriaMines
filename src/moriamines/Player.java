@@ -1,5 +1,6 @@
 package moriamines;
 
+import moriamines.Items.Item;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,9 +15,15 @@ public class Player {
         mySword.getWeaponDmg;
     }
      */
-    Room currentRoom = new Room(0);
+    private GameControl gc;
 
-    ArrayList<Item> inv = new ArrayList();
+    public Player(GameControl gac) {
+        gc = gac;
+    }
+
+    private Room currentRoom = new Room(0);
+
+    private ArrayList<Item> inv = new ArrayList();
 
     private String playerName;
     private int playerHealth;
@@ -53,23 +60,43 @@ public class Player {
     }
 
     public void goNorth() {
-        getCurrentRoom().setRoomSeen(true);
-        currentRoom = currentRoom.getRoomN();
+        if (currentRoom.getRoomN() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomN();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
     }
 
     public void goSouth() {
-        getCurrentRoom().setRoomSeen(true);
-        currentRoom = currentRoom.getRoomS();
+        if (currentRoom.getRoomS() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomS();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
     }
 
     public void goEast() {
-        getCurrentRoom().setRoomSeen(true);
-        currentRoom = currentRoom.getRoomE();
+        if (currentRoom.getRoomE() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomE();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
     }
 
     public void goWest() {
-        getCurrentRoom().setRoomSeen(true);
-        currentRoom = currentRoom.getRoomW();
+        if (currentRoom.getRoomW() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomW();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
     }
 
     public Room getCurrentRoom() {

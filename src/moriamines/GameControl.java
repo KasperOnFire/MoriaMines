@@ -1,5 +1,9 @@
 package moriamines;
 
+import moriamines.Items.Potion;
+import moriamines.Items.Armor;
+import moriamines.Items.Item;
+import moriamines.Items.Sword;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,16 +14,17 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class GameControl {
 
-    Player p = new Player();
+    public Player p = new Player(this);
 
     public Player getP() {
         return p;
     }
 
     Scanner input = new Scanner(System.in);
-    boolean endGame = false;
+    private boolean gamePlaying = true;
 
     public void gameSetup() {
         createPlayer();
@@ -30,7 +35,7 @@ public class GameControl {
         System.out.println("Starting game!");
         System.out.println(p.getCurrentRoom().getRoomDesc());
 
-        while (endGame == false) {
+        while (gamePlaying) {
             String cmd = input.nextLine().toLowerCase();
             switch (cmd) {
                 case "room":
@@ -38,62 +43,51 @@ public class GameControl {
                 case "description":
                 case "room description":
                 case "look around":
-                    printRoomDesc();
+                    p.getCurrentRoom().printRoomDesc();
                     break;
                 case "n":
                 case "north":
-                    if (p.getCurrentRoom().getRoomN() != null) {
-                        p.goNorth();
-                        printRoomDesc();
-                        break;
-                    } else {
-                        System.out.println("The stone wall does not allow for passage this way through.");
-                        break;
-                    }
+                    p.goNorth();
+                    break;
                 case "s":
                 case "south":
                     if (p.getCurrentRoom().getRoomS() != null) {
                         p.goSouth();
-                        printRoomDesc();
-                        break;
                     } else {
-                        System.out.println("A grey, rocky wall stands here. No way through.");
-                        break;
+                        System.out.println("The stone wall does not allow for passage this way through.");
                     }
+                    break;
                 case "e":
                 case "east":
                     if (p.getCurrentRoom().getRoomE() != null) {
                         p.goEast();
-                        printRoomDesc();
-                        break;
                     } else {
-                        System.out.println("You searh the rocky wall, but find no way on.");
-                        break;
+                        System.out.println("The stone wall does not allow for passage this way through.");
                     }
+                    break;
                 case "w":
                 case "west":
                     if (p.getCurrentRoom().getRoomW() != null) {
                         p.goWest();
-                        printRoomDesc();
-                        break;
                     } else {
-                        System.out.println("There is only a brick wall here.");
-                        break;
+                        System.out.println("The stone wall does not allow for passage this way through.");
                     }
+                    break;
                 case "take gold":
                     if ((p.getCurrentRoom().getRoomGold()) > 0) {
                         p.setPlayerGold((p.getPlayerGold() + p.getCurrentRoom().getRoomGold()));
                         System.out.println("You pick up the gold you found.");
                         System.out.println("You now have " + p.getPlayerGold() + " Gold in your bag.");
                         p.getCurrentRoom().setRoomGold(0);
-                        break;
+
                     } else {
                         System.out.println("There is nothing here.");
-                        break;
+
                     }
+                    break;
                 case "use":
                     System.out.println("Inventory:");
-                    for (Item i : p.inv) {
+                    for (Item i : p.getInv()) {
                         System.out.println(i.getItemDesc());
                     }
                     System.out.println("What item would you like to use?");
@@ -102,7 +96,7 @@ public class GameControl {
                 case "equipped":
                 case "equip":
                     System.out.println("Inventory:");
-                    for (Item i : p.inv) {
+                    for (Item i : p.getInv()) {
                         System.out.println(i.getItemDesc());
                     }
                     System.out.println("What item would you like to equip?");
@@ -110,8 +104,9 @@ public class GameControl {
                     break;
                 case "items":
                 case "item":
+                case "inventory":
                     System.out.println("Inventory:");
-                    for (Item i : p.inv) {
+                    for (Item i : p.getInv()) {
                         System.out.println(i.getItemDesc());
                     }
                     break;
@@ -129,13 +124,17 @@ public class GameControl {
                     System.out.println("Gold: " + p.getPlayerGold());
                     break;
                 case "pick up":
-                    System.out.println("you take the " + p.getCurrentRoom().getRoomItemDesc() + " and put it in yout bag.");
-                    p.addToInv(p.getCurrentRoom().getRoomItem());
-                    p.getCurrentRoom().setRoomItem(null);
+                    if (p.getCurrentRoom().getRoomItem() == null) {
+                        System.out.println("There is no item here");
+                    } else {
+                        System.out.println("you take the " + p.getCurrentRoom().getRoomItemDesc() + " and put it in yout bag.");
+                        p.addToInv(p.getCurrentRoom().getRoomItem());
+                        p.getCurrentRoom().setRoomItem(null);
+                    }
                     break;
                 case "quit":
                     System.out.println("");
-                    endGame = true;
+                    gamePlaying = false;
                     break;
                 case "help":
                     System.out.println("List of commands:");
@@ -156,18 +155,22 @@ public class GameControl {
                     break;
             }
             if (p.getCurrentRoom().isRoomExit()) {
-                endGame = true;
+                gamePlaying = false;
             }
         }
 
-        System.out.println("Game Over!");
-        System.out.println("you had " + p.getPlayerGold() + " Gold.");
+        System.out.println(
+                "Game Over!");
+        System.out.println(
+                "you had " + p.getPlayerGold() + " Gold.");
         try {
             writeToFile();
         } catch (IOException ex) {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Thank you for playing Mines of Moria!");
+
+        System.out.println(
+                "Thank you for playing Mines of Moria!");
     }
 
     public void createPlayer() {
@@ -175,22 +178,16 @@ public class GameControl {
         p.setPlayerName(input.nextLine());
         p.setPlayerGold(0);
         p.setPlayerHealth(100);
+        p.setPlayerDmg(2);
+        p.setPlayerDef(0);
 
-    }
-
-    public void printRoomDesc() {
-        if (p.getCurrentRoom().isRoomSeen()) {
-            System.out.println(p.getCurrentRoom().getRoomDescSeen());
-        } else {
-            System.out.println(p.getCurrentRoom().getRoomDesc());
-        }
     }
 
     public void equipCommand() {
         String item = input.nextLine().toLowerCase();
         switch (item) {
             case "wooden sword":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("wooden sword")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -200,7 +197,7 @@ public class GameControl {
                     }
                 }
             case "steel sword":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("steel sword")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -210,7 +207,7 @@ public class GameControl {
                     }
                 }
             case "rusty pickaxe":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("rusty pickaxe")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -220,7 +217,7 @@ public class GameControl {
                     }
                 }
             case "broken bottle":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("broken bottle")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -230,7 +227,7 @@ public class GameControl {
                     }
                 }
             case "dwarf femur":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("dwarf femur")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -240,7 +237,7 @@ public class GameControl {
                     }
                 }
             case "ancient dwarf war axe":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("ancient dwarf war axe")) {
                         if (i instanceof Sword) {
                             Sword mySword = (Sword) i;
@@ -256,44 +253,43 @@ public class GameControl {
         String use = input.nextLine().toLowerCase();
         switch (use) {
             case "health potion":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (p.getPlayerHealth() == 100) {
                         System.out.println("You are already at full health!");
-                        break;
                     } else if ((i.getItemDesc().toLowerCase()).equals("health potion")) {
                         if (i instanceof Potion) {
                             Potion myPotion = (Potion) i;
                             myPotion.getRestoreHealth();
-                            break;
                         }
                     }
+                    break;
                 }
             case "fried chicken":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (p.getPlayerHealth() == 100) {
                         System.out.println("You are already at full health!");
-                        break;
                     } else if ((i.getItemDesc().toLowerCase()).equals("fried chicken")) {
                         if (i instanceof Potion) {
                             Potion myPotion = (Potion) i;
                             myPotion.getRestoreHealth();
-                            break;
                         }
                     }
+                    break;
                 }
             case "red mushroom":
-                for (Item i : p.inv) {
+                for (Item i : p.getInv()) {
                     if (p.getPlayerHealth() == 100) {
                         System.out.println("You are already at full health!");
-                        break;
+
                     } else if ((i.getItemDesc().toLowerCase()).equals("red mushroom")) {
                         if (i instanceof Potion) {
                             Potion myPotion = (Potion) i;
                             myPotion.getRestoreHealth();
-                            break;
+
                         }
                     }
                 }
+                break;
         }
     }
 
@@ -309,6 +305,7 @@ public class GameControl {
         Room r2 = new Room(randomGold());
         r2.setRoomDesc("You walk into the hallway. At the end, there is a small room. In of the corners lie roomGold gold pieces.");
         r2.setRoomDescSeen("You go back in to the hallway. There is a small room at the end.");
+        r2.setRoomMonster(new Monster("a wild Stefan", 15, 5, (new Armor("wooden helmet", 4))));
         Room r3 = new Room(0);
         r3.setRoomDesc("A bunch broken tools lies in the middle of the cornerroom. Amidst the pile there is a rusty pickaxe.");
         r3.setRoomDescSeen("You walk back into the corner room. There is some broken tools in the middle of the room. Nothing of value.");

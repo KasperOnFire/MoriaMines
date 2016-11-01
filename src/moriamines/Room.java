@@ -1,5 +1,7 @@
 package moriamines;
 
+import moriamines.Items.Item;
+
 public class Room {
 
     private String roomDesc = "";
@@ -8,6 +10,7 @@ public class Room {
     private boolean roomExit = false;
     private Item roomItem;
     private boolean roomSeen = false;
+    private Monster roomMonster = null;
 
     private Room RoomN = null;
     private Room RoomS = null;
@@ -16,6 +19,23 @@ public class Room {
 
     public Room(int Gold) {
         roomGold = Gold;
+    }
+
+    public void enterRoom(Player pl) {
+        if (roomMonster == null) {
+            printRoomDesc();
+        } else {
+            new Combat(pl, roomMonster);
+            printRoomDesc();
+        }
+    }
+
+    public void printRoomDesc() {
+        if (roomSeen) {
+            System.out.println(getRoomDescSeen());
+        } else {
+            System.out.println(getRoomDesc());
+        }
     }
 
     public void setRoomSeen(boolean roomSeen) {
@@ -101,4 +121,13 @@ public class Room {
     public void setRoomItem(Item roomItem) {
         this.roomItem = roomItem;
     }
+
+    public Monster getRoomMonster() {
+        return roomMonster;
+    }
+
+    public void setRoomMonster(Monster roomMonster) {
+        this.roomMonster = roomMonster;
+    }
+
 }
