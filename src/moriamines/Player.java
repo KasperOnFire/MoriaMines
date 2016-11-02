@@ -3,8 +3,9 @@ package moriamines;
 import moriamines.Items.Item;
 import java.util.ArrayList;
 import java.util.Scanner;
+import moriamines.Items.Armor;
 import moriamines.Items.Potion;
-import moriamines.Items.Sword;
+import moriamines.Items.Weapon;
 
 public class Player {
 
@@ -24,6 +25,7 @@ public class Player {
     private int playerDmg;
     private int playerDef;
 
+    //Makes the player equip the chosen sword/armor. Adds the damage or defense to the players.
     public void equipCommand() {
         System.out.println("Inventory:");
         for (Item i : getInv()) {
@@ -35,9 +37,9 @@ public class Player {
             case "wooden sword":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("wooden sword")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
                         }
                     }
@@ -45,9 +47,9 @@ public class Player {
             case "steel sword":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("steel sword")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
                         }
                     }
@@ -55,9 +57,9 @@ public class Player {
             case "rusty pickaxe":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("rusty pickaxe")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
                         }
                     }
@@ -65,9 +67,9 @@ public class Player {
             case "broken bottle":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("broken bottle")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
                         }
                     }
@@ -75,9 +77,9 @@ public class Player {
             case "dwarf femur":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("dwarf femur")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
                         }
                     }
@@ -85,16 +87,27 @@ public class Player {
             case "ancient dwarf war axe":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("ancient dwarf war axe")) {
-                        if (i instanceof Sword) {
-                            Sword mySword = (Sword) i;
-                            setPlayerDmg(mySword.weaponDmg);
+                        if (i instanceof Weapon) {
+                            Weapon mySword = (Weapon) i;
+                            setPlayerDmg(mySword.getWeaponDmg());
                             System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
+                        }
+                    }
+                }
+            case "wooden helmet":
+                for (Item i : inv) {
+                    if (i.getItemDesc().toLowerCase().equals("wooden helmet")) {
+                        if (i instanceof Armor) {
+                            Armor myArmor = (Armor) i;
+                            setPlayerDef(getPlayerDef() + (myArmor.getArmorDefense()));
+                            System.out.println("You equip the " + myArmor.getItemDesc() + ". Your defense is now " + getPlayerDef());
                         }
                     }
                 }
         }
     }
 
+    // used for eating/drinking healing potions. Works the same way as equipCommand();
     public void useCommand() {
         System.out.println("Inventory:");
         for (Item i : getInv()) {
@@ -172,6 +185,9 @@ public class Player {
         inv.add(i);
     }
 
+    /*The following 4 functions is what defines movement in the game.
+    it sets the users room to the one north/south and so on of it.
+     */
     public void goNorth() {
         if (currentRoom.getRoomN() != null) {
             getCurrentRoom().setRoomSeen(true);
@@ -219,7 +235,8 @@ public class Player {
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
-
+    
+    // Creates the player. Asks for a name, and sets the player values to defaults.
     public void playerSetup() {
         System.out.println("What is your name?");
         setPlayerName(input.nextLine());
@@ -252,5 +269,4 @@ public class Player {
     public void setPlayerGold(int playerGold) {
         this.playerGold = playerGold;
     }
-
 }

@@ -13,6 +13,7 @@ public class Potion extends Item {
         restoreHealth = restore;
     }
 
+    // Restores health to the player when called.
     public void restoreHealth(Item i) {
         if ((gc.getP().getPlayerHealth() + restoreHealth) > 100) {
             gc.getP().setPlayerHealth(100);

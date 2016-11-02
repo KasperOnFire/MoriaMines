@@ -3,12 +3,12 @@ package moriamines;
 import moriamines.Items.Potion;
 import moriamines.Items.Armor;
 import moriamines.Items.Item;
-import moriamines.Items.Sword;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import moriamines.Items.Weapon;
 
 public class GameControl {
 
@@ -17,16 +17,18 @@ public class GameControl {
     private Scanner input = new Scanner(System.in);
     private boolean gamePlaying = true;
 
-    //dont touch.
+    //Used for making a method in Potion work. Dont touch.
     public Player getP() {
         return p;
     }
 
+    // Sets up the game. Creates a player and instantiates the rooms.
     public void gameSetup() {
         p.playerSetup();
         createMap();
     }
 
+    // Primary game method. Waits for user input, and runs the commands associated with the users inputs.
     public void gameRun() {
         System.out.println("Starting game!");
         System.out.println(p.getCurrentRoom().getRoomDesc());
@@ -151,11 +153,12 @@ public class GameControl {
         return ThreadLocalRandom.current().nextInt(1, 30 + 1);
     }
 
+    // Generates a static map. Also adds gold, items and monsters to the rooms.
     public void createMap() {
         Room r1 = new Room(0);
         r1.setRoomDesc("You walk into the mines, in to the entrance. There is a hallway to the north. There is a wooden sword in the corner.");
         r1.setRoomDescSeen("You go back to the entrance of the mine.\nThere is a a hallway to the north, and the exit to the south.");
-        r1.setRoomItem(new Sword("wooden sword", 3, "sword"));
+        r1.setRoomItem(new Weapon("wooden sword", 3));
         Room r2 = new Room(randomGold());
         r2.setRoomDesc("You walk into the hallway. At the end, there is a small room. In of the corners lie roomGold gold pieces.");
         r2.setRoomDescSeen("You go back in to the hallway. There is a small room at the end.");
@@ -163,7 +166,7 @@ public class GameControl {
         Room r3 = new Room(0);
         r3.setRoomDesc("A bunch broken tools lies in the middle of the cornerroom. Amidst the pile there is a rusty pickaxe.");
         r3.setRoomDescSeen("You walk back into the corner room. There is some broken tools in the middle of the room. Nothing of value.");
-        r3.setRoomItem(new Sword("rusty pickaxe", 5, "axe"));
+        r3.setRoomItem(new Weapon("rusty pickaxe", 5));
         Room r4 = new Room(randomGold());
         r4.setRoomDesc("a broken down minecart stands here. In it lies a dead dwarf. You search his pockets, and find roomGold gold pieces  and a healing potion in his pockets.");
         r4.setRoomDescSeen("You go back to the broken minecart and the dead dwarf.");
@@ -177,18 +180,19 @@ public class GameControl {
         Room r7 = new Room(randomGold());
         r7.setRoomDesc("You enter what looks like the sleeping quarters of the mineworkers. Empty, unmade beds and old clothes lie around. You search the clothes and beds, and find roomGold Gold pieces.");
         r7.setRoomDescSeen("The sleeping quarters look just like when you left them.");
-        Room r8 = new Room(5);
+        Room r8 = new Room(randomGold());
         r8.setRoomDesc("You walk along, and find the entrance to a mineshaft. A sign says \"DANGER\". A skeleton lies underneath the sign, a nasty grim face with a smile full of golden teeth.");
         r8.setRoomDescSeen("You go back to the mineshaft entrance. But now there is no skeleton!");
+        r8.setRoomItem(new Item("Gold Teeth"));
         Room r9 = new Room(randomGold());
-        r9.setRoomItem(new Sword("broken bottle", 4, "dagger"));
+        r9.setRoomItem(new Weapon("broken bottle", 4));
         r9.setRoomDesc("You enter what looks like an underground bar. Empty bottles with a strong scent of alcohol lie all over. It looks like someone left in a hurry. On a table, there is some gold and some playing cards.");
         r9.setRoomDescSeen("The underground bar it still silent and empty, except for all the bottles");
         Room r10 = new Room(0);
         r10.setRoomDesc("In the next room, a mineshaft starts to the east. A sign at the entrance says \"Diamond mine ahead\". The door to the north says \"Caution\".");
         r10.setRoomDescSeen("The entrance to the diamon mine is silent and dark.");
         Room r11 = new Room(0);
-        r11.setRoomItem(new Sword("dwarf femur", 3, "mace"));
+        r11.setRoomItem(new Weapon("dwarf femur", 3));
         r11.setRoomDesc("You walk down the mineshaft. As you go down, more and more bones is spread over the floor. It crunches as you walk on them.");
         r11.setRoomDescSeen("The bones still crunch under your feet as you walk back.");
         Room r12 = new Room(61);
@@ -201,6 +205,7 @@ public class GameControl {
         Room r14 = new Room(150);
         r14.setRoomDesc("At the end of the mineshaft, you enter a large cave. Something monstrous is sleeping in the back of the room. It looks like it has some swords stuck in its back!");
         r14.setRoomDescSeen("The body of the monster lies in the middle of the large cave.");
+        r14.setRoomMonster(new Monster("Furious John Faxe", 35, 15, (new Armor("Fodboldsstøvler", 25))));
         Room r15 = new Room(randomGold());
         r15.setRoomItem(new Potion("red mushroom", 15));
         r15.setRoomDesc("You walk down an old tunnel, to what would look like the lower levels of the mine. You kick into something with your foot. It's a mushroom.");
@@ -209,7 +214,7 @@ public class GameControl {
         r16.setRoomDesc("You enter a large, central room. Several lit torches hangs on the walls. There is tunnels to the west, north and east of you. There is sound coming from the tunnel in the east.");
         r16.setRoomDescSeen("You go back into the well-lit room.");
         Room r17 = new Room(randomGold());
-        r17.setRoomItem(new Sword("ancient dwarf war axe", 10, "axe"));
+        r17.setRoomItem(new Weapon("ancient dwarf war axe", 10));
         r17.setRoomDesc("You walk into the tunnel and into the room at the end. Theres something here! some dwarfes are picking and hacking away on a wall with their pickaxes. They don't look like normal Dwarfes - they seem like they are blurry and almmost transparent.");
         r17.setRoomDescSeen("The ghastly dwarfs are all gone. The tunnel is silent.");
         Room r18 = new Room(0);
