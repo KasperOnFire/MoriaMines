@@ -29,10 +29,9 @@ public class GameControl {
     }
 
     // Primary game method. Waits for user input, and runs the commands associated with the users inputs.
-    public void gameRun() {
+    public void gameRun() throws IOException {
         System.out.println("Starting game!");
         System.out.println(p.getCurrentRoom().getRoomDesc());
-
         while (gamePlaying) {
             String cmd = input.nextLine().toLowerCase();
             switch (cmd) {
@@ -127,6 +126,11 @@ public class GameControl {
                     System.out.println("quit: ends the game.\n");
                     System.out.println(p.getCurrentRoom().getRoomDesc());
                     break;
+                case "hs":
+                case "highscore":
+                    hs.sortFile();
+                    hs.readFromFile();
+                    break;
                 default:
                     System.out.println("Command not recognized. type help for list of commands.\n");
                     break;
@@ -156,7 +160,7 @@ public class GameControl {
 
     // Generates a static map. Also adds gold, items and monsters to the rooms.
     public void createMap() {
-        Room r1 = new Room(0);
+        Room r1 = new Room(randomGold());
         r1.setRoomDesc("You walk into the mines, in to the entrance. There is a hallway to the north. There is a wooden sword in the corner.");
         r1.setRoomDescSeen("You go back to the entrance of the mine.\nThere is a a hallway to the north, and the exit to the south.");
         r1.setRoomItem(new Weapon("wooden sword", 3));

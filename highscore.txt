@@ -1,3 +1,6 @@
-Player Kasper Earned 15 gold
-Player Christopher Earned 2 gold
-Player Kasper Earned 0 gold
+2 Gold earned and 0 monsters killed by Player Kasper
+12 Gold earned and 0 monsters killed by Player abc
+4 Gold earned and 1 monsters killed by Player Christopher
+highscore.txt
+highscore.txt
+2 Gold earned and 0 monsters killed by Player Kasper

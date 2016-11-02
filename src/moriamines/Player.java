@@ -24,6 +24,7 @@ public class Player {
     private int playerGold;
     private int playerDmg;
     private int playerDef;
+    private int monstersKilled;
 
     //Makes the player equip the chosen sword/armor. Adds the damage or defense to the players.
     public void equipCommand() {
@@ -289,4 +290,13 @@ public class Player {
     public void setPlayerGold(int playerGold) {
         this.playerGold = playerGold;
     }
+
+    public int getMonstersKilled() {
+        return monstersKilled;
+    }
+
+    public void setMonstersKilled(int monstersKilled) {
+        this.monstersKilled = monstersKilled;
+    }
+
 }
