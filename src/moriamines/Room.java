@@ -7,8 +7,8 @@ public class Room {
     private String roomDesc = "";
     private String roomDescSeen = "";
     private int roomGold = 0;
-    private boolean roomExit = false;
     private Item roomItem;
+    private boolean roomExit = false;
     private boolean roomSeen = false;
     private Monster roomMonster = null;
 
