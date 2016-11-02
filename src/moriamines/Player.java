@@ -34,6 +34,10 @@ public class Player {
         System.out.println("What item would you like to equip?");
         String item = input.nextLine().toLowerCase();
         switch (item) {
+            case "quit":
+            case "exit":
+            case "cancel":
+                break;
             case "wooden sword":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("wooden sword")) {
@@ -44,6 +48,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "steel sword":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("steel sword")) {
@@ -54,6 +59,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "rusty pickaxe":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("rusty pickaxe")) {
@@ -64,6 +70,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "broken bottle":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("broken bottle")) {
@@ -74,6 +81,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "dwarf femur":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("dwarf femur")) {
@@ -84,6 +92,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "ancient dwarf war axe":
                 for (Item i : getInv()) {
                     if (i.getItemDesc().toLowerCase().equals("ancient dwarf war axe")) {
@@ -94,6 +103,7 @@ public class Player {
                         }
                     }
                 }
+                break;
             case "wooden helmet":
                 for (Item i : inv) {
                     if (i.getItemDesc().toLowerCase().equals("wooden helmet")) {
@@ -104,6 +114,10 @@ public class Player {
                         }
                     }
                 }
+                break;
+            default:
+                System.out.println("You dont have that item! \n");
+                equipCommand();
         }
     }
 
@@ -116,6 +130,10 @@ public class Player {
         System.out.println("What item would you like to use?");
         String use = input.nextLine().toLowerCase();
         switch (use) {
+            case "quit":
+            case "exit":
+            case "cancel":
+                break;
             case "health potion":
                 for (Item i : getInv()) {
                     if (getPlayerHealth() == 100) {
@@ -126,8 +144,8 @@ public class Player {
                             myPotion.getRestoreHealth();
                         }
                     }
-                    break;
                 }
+                break;
             case "fried chicken":
                 for (Item i : getInv()) {
                     if (getPlayerHealth() == 100) {
@@ -138,8 +156,8 @@ public class Player {
                             myPotion.getRestoreHealth();
                         }
                     }
-                    break;
                 }
+                break;
             case "red mushroom":
                 for (Item i : getInv()) {
                     if (getPlayerHealth() == 100) {
@@ -149,11 +167,13 @@ public class Player {
                         if (i instanceof Potion) {
                             Potion myPotion = (Potion) i;
                             myPotion.getRestoreHealth();
-
                         }
                     }
                 }
                 break;
+            default:
+                System.out.println("You dont have that item!");
+                useCommand();
         }
     }
 
@@ -235,7 +255,7 @@ public class Player {
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
-    
+
     // Creates the player. Asks for a name, and sets the player values to defaults.
     public void playerSetup() {
         System.out.println("What is your name?");

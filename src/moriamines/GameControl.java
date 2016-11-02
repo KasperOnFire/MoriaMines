@@ -81,6 +81,7 @@ public class GameControl {
                 case "items":
                 case "item":
                 case "inventory":
+                case "inv":
                     System.out.println("Inventory:");
                     for (Item i : p.getInv()) {
                         System.out.println(i.getItemDesc());

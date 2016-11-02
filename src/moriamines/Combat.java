@@ -18,8 +18,8 @@ public class Combat {
     //  The combat method. Runs the monsters and the players turn.
     public void startCombat() {
         combat = true;
-        System.out.println("There is a monster in here!");
-        System.out.println("The monster is a " + p.getCurrentRoom().getRoomMonster().getMonsterDesc());
+        System.out.println("\nThere is a monster in here!");
+        System.out.println("The monster is a " + p.getCurrentRoom().getRoomMonster().getMonsterDesc() + ("!"));
         while (combat) {
             monsterTurn();
             playerTurn();
@@ -33,9 +33,9 @@ public class Combat {
         System.out.println("it hits you for " + m.getMonsterDmg() + ".");
         p.setPlayerHealth(p.getPlayerHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
         if (p.getPlayerHealth() > 0) {
-            System.out.println("You have " + p.getPlayerHealth() + " Health left!");
+            System.out.println("You have " + p.getPlayerHealth() + " Health left!\n");
         } else {
-            System.out.println("You die!");
+            System.out.println("You die!\n");
 
         }
 
@@ -44,11 +44,12 @@ public class Combat {
 // runs the player turns. Waits for player inputs to choose what to do.
     public void playerTurn() {
         System.out.println("What will you do?");
-        System.out.println("Fight/Heal/Use Items");
+        System.out.println("Fight/Heal/Use/Equip Items");
         String cmd = input.nextLine().toLowerCase();
         switch (cmd) {
             case "fight":
             case "hit":
+            case "attack":
                 System.out.println("You attack the monster!");
                 if (p.getPlayerDmg() > 2) {
                     System.out.println("You swing your weapon for " + p.getPlayerDmg() + " damage.");
@@ -58,18 +59,20 @@ public class Combat {
                     m.setMonsterHealth((m.getMonsterHealth() - p.getPlayerDmg()));
                 }
                 if (m.getMonsterHealth() > 0) {
-                    System.out.println("The monster takes damage! it now has " + m.getMonsterHealth() + " health left!");
+                    System.out.println("The monster takes damage! it now has " + m.getMonsterHealth() + " health left!\n");
                 } else {
-                    System.out.println("The monster dies!");
+                    System.out.println("The monster dies!\n");
                     combat = false;
                 }
                 break;
             case "use":
             case "use item":
+            case "heal":
                 p.useCommand();
                 break;
             case "equipped":
             case "equip":
+            case "weapon":
                 p.equipCommand();
                 break;
             case "items":
@@ -80,6 +83,10 @@ public class Combat {
                     System.out.println(i.getItemDesc());
                 }
                 break;
+            default:
+                System.out.println("Command not recognized\n");
+                playerTurn();
+                break;
         }
 
     }
@@ -87,7 +94,7 @@ public class Combat {
     //Gives the player the item a dead monster may have.
     public void loot() {
         if (m.getMonsterItem() != null) {
-            System.out.println("you search the monster, and you find a " + m.getMonsterItem().getItemDesc());
+            System.out.println("you search the monster, and you find a " + m.getMonsterItem().getItemDesc() + ".");
             p.addToInv(m.getMonsterItem());
             m.setMonsterItem(null);
         } else {
