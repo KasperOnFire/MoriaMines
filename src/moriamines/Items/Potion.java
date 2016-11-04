@@ -15,15 +15,15 @@ public class Potion extends Item {
 
     // Restores health to the player when called.
     public void restoreHealth(Item i) {
-        if ((gc.getP().getPlayerHealth() + restoreHealth) > 100) {
-            gc.getP().setPlayerHealth(100);
-            System.out.println("You healed for " + (100-gc.getP().getPlayerHealth()));
+        if ((gc.getP().getPlayerCurrentHealth() + restoreHealth) > gc.getP().getPlayerMaxHealth()) {
+            gc.getP().setPlayerCurrentHealth(gc.getP().getPlayerMaxHealth());
+            System.out.println("You healed for " + (100 - gc.getP().getPlayerMaxHealth()));
         } else {
-            gc.getP().setPlayerHealth((gc.getP().getPlayerHealth() + restoreHealth));
+            gc.getP().setPlayerCurrentHealth((gc.getP().getPlayerCurrentHealth() + restoreHealth));
             System.out.println("You healed for " + restoreHealth);
         }
         gc.getP().getInv().remove(i);
-        System.out.println("You now have " + gc.getP().getPlayerHealth() + " health.");
+        System.out.println("You now have " + gc.getP().getPlayerCurrentHealth() + "/" + gc.getP().getPlayerMaxHealth() + " health.");
 
     }
 

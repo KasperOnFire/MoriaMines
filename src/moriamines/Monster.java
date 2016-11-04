@@ -8,12 +8,16 @@ public class Monster {
     private int monsterHealth;
     private int monsterDmg;
     private Item monsterItem;
+    private int monsterGold = 0;
+    private int monsterExp;
 
-    public Monster(String desc, int hp, int dmg, Item it) {
+    public Monster(String desc, int hp, int dmg, Item it, int gold) {
         monsterDesc = desc;
         monsterHealth = hp;
         monsterDmg = dmg;
         monsterItem = it;
+        monsterGold = gold;
+        monsterExp = hp;
     }
 
     public String getMonsterDesc() {
@@ -48,4 +52,19 @@ public class Monster {
         this.monsterItem = monsterItem;
     }
 
+    public int getMonsterGold() {
+        return monsterGold;
+    }
+
+    public void setMonsterGold(int monsterGold) {
+        this.monsterGold = monsterGold;
+    }
+
+    public int getMonsterExp() {
+        return monsterExp;
+    }
+
+    public void setMonsterExp(int monsterExp) {
+        this.monsterExp = monsterExp;
+    }
 }

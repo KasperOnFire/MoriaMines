@@ -20,13 +20,50 @@ public class Player {
     private ArrayList<Item> inv = new ArrayList();
 
     private String playerName;
-    private int playerHealth;
+    private int playerMaxHealth;
+    private int playerCurrentHealth;
     private int playerGold;
     private int playerDmg;
     private int playerDef;
     private int monstersKilled;
+    private int playerExp;
+    private int playerLvl;
 
-    // equips the item that matches the description the usre puts in.
+    // Creates the player. Asks for a name, and sets the player values to defaults.
+    public void playerSetup() {
+        System.out.println("What is your name?");
+        setPlayerName(input.nextLine());
+        setPlayerGold(0);
+        setPlayerMaxHealth(60);
+        setPlayerCurrentHealth(60);
+        setPlayerDmg(2);
+        setPlayerDef(0);
+        setPlayerExp(0);
+        setPlayerLvl(1);
+        inv.add(new Weapon("wooden sword", 3));
+        inv.add(new Armor("cotton shirt", 1));
+    }
+
+    public void playerStats() {
+        System.out.println("Player Stats:");
+        System.out.println("Exp: " + getPlayerExp() + "/100");
+        System.out.println("Level: " + getPlayerLvl());
+        System.out.println("Health: " + getPlayerCurrentHealth() + "/" + getPlayerMaxHealth());
+        System.out.println("Damage: " + (getPlayerDmg() + getPlayerLvl()));
+        System.out.println("Armor: " + getPlayerDef());
+        System.out.println("Gold: " + getPlayerGold());
+    }
+
+    public void levelUp() {
+        playerLvl++;
+        System.out.println("You are now level " + playerLvl + "!");
+        System.out.println("Max HP increased by 10!");
+        setPlayerMaxHealth(getPlayerMaxHealth() + 10);
+        setPlayerCurrentHealth(getPlayerCurrentHealth() + 10);
+        System.out.println("Your Health is now " + getPlayerCurrentHealth() + "/" + getPlayerMaxHealth());
+    }
+
+    // equips the item that matches the description the usre puts in. v2 - its dynamic. works for every item, no matter the name.
     public void equipCommand() {
         System.out.println("Inventory:");
         for (Item i : getInv()) {
@@ -40,7 +77,7 @@ public class Player {
                     if (j instanceof Weapon && !j.isEquipStatus()) {
                         Weapon mySword = (Weapon) j;
                         setPlayerDmg(mySword.getWeaponDmg());
-                        System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
+                        System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + (getPlayerDmg() + getPlayerLvl()));
                         j.setEquipStatus(true);
                         break;
                     } else if (j instanceof Armor && !j.isEquipStatus()) {
@@ -50,17 +87,17 @@ public class Player {
                         j.setEquipStatus(true);
                         break;
                     }
-                } else if (j.isEquipStatus()) {
+                } else if (item.equals(j.getItemDesc()) && j.isEquipStatus()) {
                     System.out.println("You already equipped that item!");
                 } else {
-                    System.out.println("You dont have that item!");
                 }
-
             }
+
         }
+
     }
 
-    // used for eating/drinking healing potions. Works the same way as equipCommand();
+    // used for eating/drinking healing potions. Works the same way as equipCommand(); also Dynamic
     public void useCommand() {
         System.out.println("Inventory:");
         for (Item i : inv) {
@@ -69,7 +106,7 @@ public class Player {
         System.out.println("What item would you like to use?");
         String use = input.nextLine().toLowerCase();
         if (use != "quit") {
-            if (getPlayerHealth() == 100) {
+            if (getPlayerCurrentHealth() == 100) {
                 System.out.println("You are already at full health!");
             } else {
                 for (Item j : inv) {
@@ -84,6 +121,22 @@ public class Player {
                     }
 
                 }
+            }
+        }
+    }
+
+    public void inventory() {
+        System.out.println("Inventory:");
+        for (Item i : inv) {
+            System.out.println(i.getItemDesc());
+        }
+    }
+
+    public void equipped() {
+        System.out.println("Equipped items:");
+        for (Item i : inv) {
+            if (i.isEquipStatus()) {
+                System.out.println(i.getItemDesc());
             }
         }
     }
@@ -110,6 +163,14 @@ public class Player {
 
     public void setInv(ArrayList<Item> inv) {
         this.inv = inv;
+    }
+
+    public int getPlayerMaxHealth() {
+        return playerMaxHealth;
+    }
+
+    public void setPlayerMaxHealth(int playerMaxHealth) {
+        this.playerMaxHealth = playerMaxHealth;
     }
 
     public void addToInv(Item i) {
@@ -167,18 +228,6 @@ public class Player {
         this.currentRoom = currentRoom;
     }
 
-    // Creates the player. Asks for a name, and sets the player values to defaults.
-    public void playerSetup() {
-        System.out.println("What is your name?");
-        setPlayerName(input.nextLine());
-        setPlayerGold(0);
-        setPlayerHealth(100);
-        setPlayerDmg(2);
-        setPlayerDef(0);
-        inv.add(new Weapon("wooden sword", 3));
-        inv.add(new Armor("cotton shirt", 1));
-    }
-
     public String getPlayerName() {
         return playerName;
     }
@@ -187,12 +236,12 @@ public class Player {
         this.playerName = playerName;
     }
 
-    public int getPlayerHealth() {
-        return playerHealth;
+    public int getPlayerCurrentHealth() {
+        return playerCurrentHealth;
     }
 
-    public void setPlayerHealth(int playerHealth) {
-        this.playerHealth = playerHealth;
+    public void setPlayerCurrentHealth(int playerCurrentHealth) {
+        this.playerCurrentHealth = playerCurrentHealth;
     }
 
     public int getPlayerGold() {
@@ -209,6 +258,22 @@ public class Player {
 
     public void setMonstersKilled(int monstersKilled) {
         this.monstersKilled = monstersKilled;
+    }
+
+    public int getPlayerExp() {
+        return playerExp;
+    }
+
+    public void setPlayerExp(int playerExp) {
+        this.playerExp = playerExp;
+    }
+
+    public int getPlayerLvl() {
+        return playerLvl;
+    }
+
+    public void setPlayerLvl(int playerLvl) {
+        this.playerLvl = playerLvl;
     }
 
 }
