@@ -10,7 +10,6 @@ import moriamines.Items.Weapon;
 public class GameControl {
 
     private Player p = new Player(this);
-    private Highscore hs = new Highscore(p);
     private Scanner input = new Scanner(System.in);
     private boolean gamePlaying = true;
 
@@ -125,7 +124,7 @@ public class GameControl {
                     break;
                 case "hs":
                 case "highscore":
-                    hs.printHs();
+                    FileHandler.printHighscore();
                     break;
                 default:
                     System.out.println("Command not recognized. type help for list of commands.\n");
@@ -141,7 +140,7 @@ public class GameControl {
     private void gameOver() {
         System.out.println("Game Over!");
         System.out.println("you had " + p.getPlayerGold() + " Gold.");
-        hs.printHs();
+        FileHandler.runHighscore(p);
         System.out.println("Thank you for playing Mines of Moria!");
     }
 
