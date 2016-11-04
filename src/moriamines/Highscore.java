@@ -8,61 +8,105 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Highscore {
 
     private Player p;
+    private static ArrayList<String> highscoreList = new ArrayList<>();
+    private static ArrayList<String> tempList = new ArrayList<>();
 
     public Highscore(Player pl) {
         p = pl;
     }
 
-    public void writeToFile() throws FileNotFoundException {
-        String text = p.getPlayerGold() + " Gold earned and " + p.getMonstersKilled() + " monsters killed by Player " + p.getPlayerName() + ".";
+    public void printHs() {
+        //writeToFile();
+        readFromFile();
+        sortFile();
+        writeSortedFile();
+        printSortedFile();
+    }
+
+    //writes the players name, gold earned and monsters killed to the file.
+    public void writeToFile() {
+        String text = "Player " + p.getPlayerName() + " earned " + p.getPlayerGold() + " gold and killed " + p.getMonstersKilled() + " monsters.";
 
         try {
             PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
             pw.println(text);
             pw.close();
         } catch (FileNotFoundException f) {
-            PrintWriter out = new PrintWriter("highscore.txt");
-            out.println(text);
-            out.close();
+            PrintWriter out;
+            try {
+                out = new PrintWriter("highscore.txt");
+                out.println(text);
+                out.close();
+            } catch (FileNotFoundException ex) {
+                System.err.println("error: " + ex);;
+            }
+
         }
         System.out.println("A highscore file has been saved in GameDirectory\\highscore.txt.");
     }
 
-    public void readFromFile() throws IOException {
-        try (Stream<String> stream = Files.lines(Paths.get("highscore.txt"))) {
-            stream.forEach(System.out::println);
+    // reads from highscorefile, adds to arraylist
+    private static void readFromFile() {
 
+        try {
+            for (String line : Files.readAllLines(Paths.get("highscore.txt"))) {
+                tempList.add(line);
+            }
+        } catch (IOException ex) {
+            System.out.println("fail");;
         }
     }
 
-    // reads from highscorefile, adds to arraylist
-    public void sortFile() throws FileNotFoundException, IOException {
+    //sorts content of arraylist
+    private static void sortFile() {
+        for (int i = 0; i < tempList.size(); i++) {
+            int holdValue = 0;
+            String holdLine = tempList.get(0);
 
-        List<String> highscoreList = new ArrayList<>();
-        Scanner reader = new Scanner(Paths.get("highscore.txt"));
-
-        while (reader.hasNext()) {
-            highscoreList.add(reader.nextLine());
-        }
-
-        Collections.sort(highscoreList.subList(1, highscoreList.size()));
-        try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
-            for (String i : highscoreList) {
-                pw.println(i);
-                pw.close();
+            for (String line : tempList) {
+                try {
+                    if (holdValue < Integer.parseInt(line.replaceAll("[\\D]", "")) && !highscoreList.contains(line)) {
+                        holdValue = Integer.parseInt(line.replaceAll("[\\D]", ""));
+                        holdLine = line;
+                    }
+                } catch (NumberFormatException ex) {
+                    System.err.println("error: " + ex);
+                }
             }
-        } catch (FileNotFoundException f) {
-            System.out.println("no existing highscorefile.");
+            highscoreList.add(holdLine);
         }
+    }
 
+    //writes the sorted content to the file
+    private void writeSortedFile() {
+        for (String line : highscoreList) {
+            try {
+                PrintWriter pw = new PrintWriter(new FileOutputStream(new File("highscore.txt"), true));
+                pw.println(line);
+                pw.close();
+            } catch (FileNotFoundException f) {
+                PrintWriter out;
+                try {
+                    out = new PrintWriter("highscore.txt");
+                    out.println(line);
+                    out.close();
+                } catch (FileNotFoundException ex) {
+                    System.err.println("error: " + ex);
+                }
+            }
+        }
+    }
+
+    // prints the sorted highscorelist to the console
+    private void printSortedFile() {
+        for (String line : highscoreList) {
+            System.out.println(line);
+        }
     }
 }

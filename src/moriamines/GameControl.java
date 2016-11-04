@@ -3,11 +3,8 @@ package moriamines;
 import moriamines.Items.Potion;
 import moriamines.Items.Armor;
 import moriamines.Items.Item;
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import moriamines.Items.Weapon;
 
 public class GameControl {
@@ -29,7 +26,7 @@ public class GameControl {
     }
 
     // Primary game method. Waits for user input, and runs the commands associated with the users inputs.
-    public void gameRun() throws IOException {
+    public void gameRun() {
         System.out.println("Starting game!");
         System.out.println(p.getCurrentRoom().getRoomDesc());
         while (gamePlaying) {
@@ -128,8 +125,7 @@ public class GameControl {
                     break;
                 case "hs":
                 case "highscore":
-                    hs.sortFile();
-                    hs.readFromFile();
+                    hs.printHs();
                     break;
                 default:
                     System.out.println("Command not recognized. type help for list of commands.\n");
@@ -139,19 +135,14 @@ public class GameControl {
                 gamePlaying = false;
             }
         }
+        gameOver();
+    }
 
-        System.out.println(
-                "Game Over!");
-        System.out.println(
-                "you had " + p.getPlayerGold() + " Gold.");
-        try {
-            hs.writeToFile();
-        } catch (IOException ex) {
-            Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        System.out.println(
-                "Thank you for playing Mines of Moria!");
+    private void gameOver() {
+        System.out.println("Game Over!");
+        System.out.println("you had " + p.getPlayerGold() + " Gold.");
+        hs.printHs();
+        System.out.println("Thank you for playing Mines of Moria!");
     }
 
     private int randomGold() {
