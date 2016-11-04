@@ -22,12 +22,12 @@ public class Combat {
         System.out.println("The monster is a " + p.getCurrentRoom().getRoomMonster().getMonsterDesc() + ("!"));
         while (combat) {
             monsterTurn();
-            if (p.getPlayerHealth() > 0) {
+            if (p.getPlayerCurrentHealth() > 0) {
                 playerTurn();
             }
 
         }
-        if (p.getPlayerHealth() > 0) {
+        if (p.getPlayerCurrentHealth() > 0) {
             loot();
         }
     }
@@ -36,13 +36,13 @@ public class Combat {
     public void monsterTurn() {
         System.out.println("The monster attacks you.");
         if ((m.getMonsterDmg() - p.getPlayerDef()) < 1) {
-            p.setPlayerHealth((p.getPlayerHealth() - 1));
+            p.setPlayerCurrentHealth((p.getPlayerCurrentHealth() - 1));
             System.out.println("it hits you for 1.");
         } else {
-            p.setPlayerHealth(p.getPlayerHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
-            if (p.getPlayerHealth() > 0) {
+            p.setPlayerCurrentHealth(p.getPlayerCurrentHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
+            if (p.getPlayerCurrentHealth() > 0) {
                 System.out.println("it hits you for " + (m.getMonsterDmg() - p.getPlayerDef()));
-                System.out.println("You have " + p.getPlayerHealth() + " Health left!\n");
+                System.out.println("You have " + p.getPlayerCurrentHealth() + " Health left!\n");
             } else {
                 System.out.println("You die!\n");
                 combat = false;
@@ -61,12 +61,12 @@ public class Combat {
             case "hit":
             case "attack":
                 System.out.println("You attack the monster!");
-                if (p.getPlayerDmg() > 2) {
-                    System.out.println("You swing your weapon for " + p.getPlayerDmg() + " damage.");
-                    m.setMonsterHealth((m.getMonsterHealth() - p.getPlayerDmg()));
+                if ((p.getPlayerDmg() + p.getPlayerLvl()) > 3) {
+                    System.out.println("You swing your weapon for " + (p.getPlayerDmg() + p.getPlayerLvl()) + " damage.");
+                    m.setMonsterHealth((m.getMonsterHealth() - (p.getPlayerDmg() + p.getPlayerLvl())));
                 } else {
-                    System.out.println("You punch the monster for " + p.getPlayerDmg() + " damage.");
-                    m.setMonsterHealth((m.getMonsterHealth() - p.getPlayerDmg()));
+                    System.out.println("You punch the monster for " + (p.getPlayerDmg() + p.getPlayerLvl()) + " damage.");
+                    m.setMonsterHealth((m.getMonsterHealth() - (p.getPlayerDmg() + p.getPlayerLvl())));
                 }
                 if (m.getMonsterHealth() > 0) {
                     System.out.println("The monster takes damage! it now has " + m.getMonsterHealth() + " health left!\n");
@@ -104,12 +104,27 @@ public class Combat {
 
     //Gives the player the item a dead monster may have.
     public void loot() {
+        System.out.println("You earn " + m.getMonsterExp() + "experience.");
+        if ((m.getMonsterExp() + p.getPlayerExp()) > 100) {
+            System.out.println("Level up!");
+            p.levelUp();
+            p.setPlayerExp((m.getMonsterExp() + p.getPlayerExp()) - 100);
+            System.out.println("Exp: " + p.getPlayerExp() + "/100.");
+        } else {
+            p.setPlayerExp(p.getPlayerExp() + m.getMonsterExp());
+            System.out.println("Exp: " + p.getPlayerExp() + "/100.");
+        }
         if (m.getMonsterItem() != null) {
             System.out.println("you search the monster, and you find a " + m.getMonsterItem().getItemDesc() + ".");
             p.addToInv(m.getMonsterItem());
             m.setMonsterItem(null);
         } else {
             System.out.println("You search the monster, but find nothing of use.");
+        }
+        if (m.getMonsterGold() > 0) {
+            System.out.println("you also find " + m.getMonsterGold() + " gold.");
+            p.setPlayerGold(p.getPlayerGold() + m.getMonsterGold());
+            m.setMonsterGold(0);
         }
 
     }
