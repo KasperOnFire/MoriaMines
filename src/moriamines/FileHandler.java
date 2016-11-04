@@ -19,7 +19,7 @@ public class FileHandler {
         StringWriter sw = new StringWriter();
         BufferedWriter bw = new BufferedWriter(sw);
 
-        tempList.add("Player " + hero.getPlayerName() + " earned " + hero.getPlayerGold() + " gold, and killed " + hero.getMonstersKilled() + " monster(s)");
+        tempList.add("Player " + hero.getPlayerName() + " earned " + hero.getPlayerGold() + " gold, and killed " + hero.getMonstersKilled() + " monster(s).");
         fileToList();
         sortList();
         addToBuffer(bw);

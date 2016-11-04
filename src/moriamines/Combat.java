@@ -4,12 +4,12 @@ import java.util.Scanner;
 import moriamines.Items.Item;
 
 public class Combat {
-    
+
     private Player p;
     private Monster m;
     private boolean combat = false;
     Scanner input = new Scanner(System.in);
-    
+
     public Combat(Player pl, Monster mo) {
         p = pl;
         m = mo;
@@ -22,23 +22,33 @@ public class Combat {
         System.out.println("The monster is a " + p.getCurrentRoom().getRoomMonster().getMonsterDesc() + ("!"));
         while (combat) {
             monsterTurn();
-            playerTurn();
+            if (p.getPlayerHealth() > 0) {
+                playerTurn();
+            }
+
         }
-        loot();
+        if (p.getPlayerHealth() > 0) {
+            loot();
+        }
     }
 
     //Makes the monster attack.
     public void monsterTurn() {
         System.out.println("The monster attacks you.");
-        System.out.println("it hits you for " + m.getMonsterDmg() + ".");
-        p.setPlayerHealth(p.getPlayerHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
-        if (p.getPlayerHealth() > 0) {
-            System.out.println("You have " + p.getPlayerHealth() + " Health left!\n");
+        if ((m.getMonsterDmg() - p.getPlayerDef()) < 1) {
+            p.setPlayerHealth((p.getPlayerHealth() - 1));
+            System.out.println("it hits you for 1.");
         } else {
-            System.out.println("You die!\n");
-            
+            p.setPlayerHealth(p.getPlayerHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
+            if (p.getPlayerHealth() > 0) {
+                System.out.println("it hits you for " + (m.getMonsterDmg() - p.getPlayerDef()));
+                System.out.println("You have " + p.getPlayerHealth() + " Health left!\n");
+            } else {
+                System.out.println("You die!\n");
+                combat = false;
+            }
         }
-        
+
     }
 
 // runs the player turns. Waits for player inputs to choose what to do.
@@ -89,7 +99,7 @@ public class Combat {
                 playerTurn();
                 break;
         }
-        
+
     }
 
     //Gives the player the item a dead monster may have.
@@ -101,7 +111,7 @@ public class Combat {
         } else {
             System.out.println("You search the monster, but find nothing of use.");
         }
-        
+
     }
-    
+
 }

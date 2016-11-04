@@ -20,12 +20,11 @@ public class Room {
     public Room(int Gold) {
         roomGold = Gold;
     }
-    
+
     /*
     This method runs when you enter a room, and looks if there is a monster object in the room.
     If there is, combat is started.
-    */
-
+     */
     public void enterRoom(Player pl) {
         if (roomMonster != null) {
             printRoomDesc();
@@ -40,9 +39,9 @@ public class Room {
     //Prints the correct room description depending on if you have seen the room before or not.
     public void printRoomDesc() {
         if (roomSeen) {
-            System.out.println(getRoomDescSeen());
+            System.out.println(getRoomDescSeen() + "\n");
         } else {
-            System.out.println(getRoomDesc());
+            System.out.println(getRoomDesc() + "\n");
         }
     }
 

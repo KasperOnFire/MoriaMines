@@ -26,7 +26,7 @@ public class Player {
     private int playerDef;
     private int monstersKilled;
 
-    //Makes the player equip the chosen sword/armor. Adds the damage or defense to the players.
+    // equips the item that matches the description the usre puts in.
     public void equipCommand() {
         System.out.println("Inventory:");
         for (Item i : getInv()) {
@@ -34,147 +34,57 @@ public class Player {
         }
         System.out.println("What item would you like to equip?");
         String item = input.nextLine().toLowerCase();
-        switch (item) {
-            case "quit":
-            case "exit":
-            case "cancel":
-                break;
-            case "wooden sword":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("wooden sword")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
+        if (item != "quit") {
+            for (Item j : inv) {
+                if (item.equals(j.getItemDesc())) {
+                    if (j instanceof Weapon && !j.isEquipStatus()) {
+                        Weapon mySword = (Weapon) j;
+                        setPlayerDmg(mySword.getWeaponDmg());
+                        System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
+                        j.setEquipStatus(true);
+                        break;
+                    } else if (j instanceof Armor && !j.isEquipStatus()) {
+                        Armor myArmor = (Armor) j;
+                        setPlayerDef(getPlayerDef() + (myArmor.getArmorDefense()));
+                        System.out.println("You equip the " + myArmor.getItemDesc() + ". Your defense is now " + getPlayerDef());
+                        j.setEquipStatus(true);
+                        break;
                     }
+                } else if (j.isEquipStatus()) {
+                    System.out.println("You already equipped that item!");
+                } else {
+                    System.out.println("You dont have that item!");
                 }
-                break;
-            case "steel sword":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("steel sword")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
-                    }
-                }
-                break;
-            case "rusty pickaxe":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("rusty pickaxe")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
-                    }
-                }
-                break;
-            case "broken bottle":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("broken bottle")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
-                    }
-                }
-                break;
-            case "dwarf femur":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("dwarf femur")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
-                    }
-                }
-                break;
-            case "ancient dwarf war axe":
-                for (Item i : getInv()) {
-                    if (i.getItemDesc().toLowerCase().equals("ancient dwarf war axe")) {
-                        if (i instanceof Weapon) {
-                            Weapon mySword = (Weapon) i;
-                            setPlayerDmg(mySword.getWeaponDmg());
-                            System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + getPlayerDmg());
-                        }
-                    }
-                }
-                break;
-            case "wooden helmet":
-                for (Item i : inv) {
-                    if (i.getItemDesc().toLowerCase().equals("wooden helmet")) {
-                        if (i instanceof Armor) {
-                            Armor myArmor = (Armor) i;
-                            setPlayerDef(getPlayerDef() + (myArmor.getArmorDefense()));
-                            System.out.println("You equip the " + myArmor.getItemDesc() + ". Your defense is now " + getPlayerDef());
-                        }
-                    }
-                }
-                break;
-            default:
-                System.out.println("You dont have that item! \n");
-                equipCommand();
+
+            }
         }
     }
 
     // used for eating/drinking healing potions. Works the same way as equipCommand();
     public void useCommand() {
         System.out.println("Inventory:");
-        for (Item i : getInv()) {
+        for (Item i : inv) {
             System.out.println(i.getItemDesc());
         }
         System.out.println("What item would you like to use?");
         String use = input.nextLine().toLowerCase();
-        switch (use) {
-            case "quit":
-            case "exit":
-            case "cancel":
-                break;
-            case "health potion":
-                for (Item i : getInv()) {
-                    if (getPlayerHealth() == 100) {
-                        System.out.println("You are already at full health!");
-                    } else if ((i.getItemDesc().toLowerCase()).equals("health potion")) {
-                        if (i instanceof Potion) {
-                            Potion myPotion = (Potion) i;
+        if (use != "quit") {
+            if (getPlayerHealth() == 100) {
+                System.out.println("You are already at full health!");
+            } else {
+                for (Item j : inv) {
+                    if (use == j.getItemDesc()) {
+                        if (j instanceof Potion) {
+                            Potion myPotion = (Potion) j;
                             myPotion.getRestoreHealth();
+                            break;
                         }
+                    } else {
+                        System.out.println("You dont have that item!");
                     }
-                }
-                break;
-            case "fried chicken":
-                for (Item i : getInv()) {
-                    if (getPlayerHealth() == 100) {
-                        System.out.println("You are already at full health!");
-                    } else if ((i.getItemDesc().toLowerCase()).equals("fried chicken")) {
-                        if (i instanceof Potion) {
-                            Potion myPotion = (Potion) i;
-                            myPotion.getRestoreHealth();
-                        }
-                    }
-                }
-                break;
-            case "red mushroom":
-                for (Item i : getInv()) {
-                    if (getPlayerHealth() == 100) {
-                        System.out.println("You are already at full health!");
 
-                    } else if ((i.getItemDesc().toLowerCase()).equals("red mushroom")) {
-                        if (i instanceof Potion) {
-                            Potion myPotion = (Potion) i;
-                            myPotion.getRestoreHealth();
-                        }
-                    }
                 }
-                break;
-            default:
-                System.out.println("You dont have that item!");
-                useCommand();
+            }
         }
     }
 
@@ -265,6 +175,8 @@ public class Player {
         setPlayerHealth(100);
         setPlayerDmg(2);
         setPlayerDef(0);
+        inv.add(new Weapon("wooden sword", 3));
+        inv.add(new Armor("cotton shirt", 1));
     }
 
     public String getPlayerName() {
