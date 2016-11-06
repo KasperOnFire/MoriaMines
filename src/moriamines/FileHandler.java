@@ -15,15 +15,16 @@ public class FileHandler {
     static ArrayList<String> tempList = new ArrayList();
     static ArrayList<String> sortedList = new ArrayList();
 
-    public static void runHighscore(Player hero) {
+    public static void runHighscore(Player p) {
         StringWriter sw = new StringWriter();
         BufferedWriter bw = new BufferedWriter(sw);
 
-        tempList.add("Player " + hero.getPlayerName() + " earned " + hero.getPlayerGold() + " gold, and killed " + hero.getMonstersKilled() + " monster(s).");
+        tempList.add("Player " + p.getPlayerName() + " earned " + p.getPlayerGold() + " Gold.");
         fileToList();
         sortList();
         addToBuffer(bw);
         writeToFile(sw);
+
         printHighscore();
     }
 
@@ -42,10 +43,10 @@ public class FileHandler {
             int holdValue = 0;
             String holdLine = tempList.get(0);
 
-            for (String line : tempList) {
-                if (holdValue < Integer.parseInt(line.replaceAll("[\\D]", "")) && !sortedList.contains(line)) {
-                    holdValue = Integer.parseInt(line.replaceAll("[\\D]", ""));
-                    holdLine = line;
+            for (String line2 : tempList) {
+                if (holdValue <= Integer.parseInt(line2.replaceAll("[\\D]", "")) && !sortedList.contains(line2)) {
+                    holdValue = Integer.parseInt(line2.replaceAll("[\\D]", ""));
+                    holdLine = line2;
                 }
             }
 
@@ -55,8 +56,8 @@ public class FileHandler {
 
     private static void addToBuffer(BufferedWriter bw) {
         try {
-            for (String line : sortedList) {
-                bw.write(line);
+            for (String line3 : sortedList) {
+                bw.write(line3);
                 bw.newLine();
             }
             bw.flush();
@@ -76,9 +77,8 @@ public class FileHandler {
     public static void printHighscore() {
         try {
             System.out.println("*** HIGHSCORES ***");
-
-            for (String line : Files.readAllLines(Paths.get("highscore.txt"))) {
-                System.out.println(line);
+            for (String highscore : Files.readAllLines(Paths.get("highscore.txt"))) {
+                System.out.println(highscore);
             }
         } catch (IOException ex) {
             System.err.println(ex);

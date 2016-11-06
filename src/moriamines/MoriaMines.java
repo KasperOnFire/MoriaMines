@@ -7,6 +7,7 @@ public class MoriaMines {
         
         gc.startGame();
         gc.endGame();
+        FileHandler.runHighscore(gc.getP());
     }
 
 }

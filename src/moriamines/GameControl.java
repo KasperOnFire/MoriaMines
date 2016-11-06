@@ -13,19 +13,19 @@ public class GameControl {
     private Scanner input = new Scanner(System.in);
     private boolean gamePlaying = true;
 
-    //Used for making a method in Potion work. Dont touch.
+    //Used for making a method in Potion and in main work.
     public Player getP() {
         return p;
     }
-
+// sets up the game, map and player.
     public void startGame() {
         System.out.println("Welcome to the Mines of Moria!");
         gameSetup();
         gameRun();
     }
-
+ // asks if the player would like to play again.
     public void endGame() {
-        System.out.println("Do you want to play again?");
+        System.out.println("Do you want to play again? This will discard your highscore!");
         String s = input.nextLine().toLowerCase();
         switch (s) {
             case "y":
@@ -48,7 +48,7 @@ public class GameControl {
     public void gameRun() {
         help();
         System.out.println("Starting game!");
-        gamePlaying=true;
+        gamePlaying = true;
         System.out.println(p.getCurrentRoom().getRoomDesc());
         while (gamePlaying) {
             String cmd = input.nextLine().toLowerCase();
@@ -89,7 +89,6 @@ public class GameControl {
                 case "use":
                     p.useCommand();
                     break;
-                case "equipped":
                 case "equip":
                     p.equipCommand();
                     break;
@@ -97,7 +96,9 @@ public class GameControl {
                 case "item":
                 case "inventory":
                 case "inv":
+                case "equipped":
                     p.inventory();
+                    System.out.println("");
                     p.equipped();
                     break;
                 case "health":
@@ -160,8 +161,8 @@ public class GameControl {
     private void gameOver() {
         System.out.println("Game Over!\n");
         System.out.println("you had " + p.getPlayerGold() + " Gold.");
-        FileHandler.runHighscore(p);
         System.out.println("Thank you for playing Mines of Moria!\n");
+        endGame();
     }
 
     private int randomGold() {

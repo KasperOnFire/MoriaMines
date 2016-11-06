@@ -46,12 +46,12 @@ public class Player {
 
     public void playerStats() {
         System.out.println("Player Stats:");
-        System.out.println("Exp: " + getPlayerExp() + "/100");
-        System.out.println("Level: " + getPlayerLvl());
         System.out.println("Health: " + getPlayerCurrentHealth() + "/" + getPlayerMaxHealth());
         System.out.println("Damage: " + (getPlayerDmg() + getPlayerLvl()));
         System.out.println("Armor: " + getPlayerDef());
         System.out.println("Gold: " + getPlayerGold());
+        System.out.println("Level: " + getPlayerLvl());
+        System.out.println("Exp: " + getPlayerExp() + "/100");
     }
 
     public void levelUp() {
@@ -86,9 +86,9 @@ public class Player {
                         System.out.println("You equip the " + myArmor.getItemDesc() + ". Your defense is now " + getPlayerDef());
                         j.setEquipStatus(true);
                         break;
+                    } else if (item.equals(j.getItemDesc()) && j.isEquipStatus()) {
+                        System.out.println("You already equipped that item!");
                     }
-                } else if (item.equals(j.getItemDesc()) && j.isEquipStatus()) {
-                    System.out.println("You already equipped that item!");
                 } else {
                 }
             }
@@ -108,19 +108,19 @@ public class Player {
         if (use != "quit") {
             if (getPlayerCurrentHealth() == 100) {
                 System.out.println("You are already at full health!");
-            } else {
+            } else if (use != "quit") {
                 for (Item j : inv) {
-                    if (use == j.getItemDesc()) {
+                    if (use.equals(j.getItemDesc())) {
                         if (j instanceof Potion) {
                             Potion myPotion = (Potion) j;
                             myPotion.getRestoreHealth();
                             break;
                         }
-                    } else {
-                        System.out.println("You dont have that item!");
                     }
-
                 }
+            } else {
+                System.out.println("You dont have that item!");
+
             }
         }
     }

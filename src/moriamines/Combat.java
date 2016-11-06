@@ -18,7 +18,7 @@ public class Combat {
     //  The combat method. Runs the monsters and the players turn.
     public void startCombat() {
         combat = true;
-        System.out.println("\nThere is a monster in here!");
+        System.out.println("There is a monster in here!");
         System.out.println("The monster is a " + p.getCurrentRoom().getRoomMonster().getMonsterDesc() + ("!"));
         while (combat) {
             monsterTurn();
@@ -38,6 +38,7 @@ public class Combat {
         if ((m.getMonsterDmg() - p.getPlayerDef()) < 1) {
             p.setPlayerCurrentHealth((p.getPlayerCurrentHealth() - 1));
             System.out.println("it hits you for 1.");
+            System.out.println("You have " + p.getPlayerCurrentHealth() + " Health left!\n");
         } else {
             p.setPlayerCurrentHealth(p.getPlayerCurrentHealth() - (m.getMonsterDmg() - p.getPlayerDef()));
             if (p.getPlayerCurrentHealth() > 0) {
@@ -104,7 +105,7 @@ public class Combat {
 
     //Gives the player the item a dead monster may have.
     public void loot() {
-        System.out.println("You earn " + m.getMonsterExp() + "experience.");
+        System.out.println("You earn " + m.getMonsterExp() + " experience.");
         if ((m.getMonsterExp() + p.getPlayerExp()) > 100) {
             System.out.println("Level up!");
             p.levelUp();
