@@ -164,7 +164,7 @@ public class GameControl {
         System.out.println("Game Over!\n");
         System.out.println("you had " + p.getPlayerGold() + " Gold.");
         System.out.println("Thank you for playing Mines of Moria!\n");
-        endGame();
+
     }
 
     private int randomGold() {
@@ -174,8 +174,8 @@ public class GameControl {
     // Generates a static map. Also adds gold, items and monsters to the rooms.
     public void createMap() {
         Item bone = new Item("broken bone");
-        Monster goblin = new Monster("mine goblin", 15, 4, bone, 2);
-        Monster orc = new Monster("orc", 20, 3, bone, 3);
+        Monster goblin = new Monster("mine goblin", 18, 4, bone, 2);
+        Monster orc = new Monster("orc", 25, 3, bone, 3);
 
         Room r1 = new Room(randomGold());
         r1.setRoomDesc("You walk into the mines, in to the entrance. There is a hallway to the north. There is some gold on the floor.");
@@ -257,6 +257,7 @@ public class GameControl {
         r16.setRoomDesc("You enter a large, central room. Several lit torches hangs on the walls. There is tunnels to the west, north and east of you. There is sound coming from the tunnel in the east.");
         r16.setRoomDescSeen("You go back into the well-lit room.");
         r16.setRoomMonster(orc);
+        r16.setRoomItem(new Weapon("Blade of the Tribes", 15));
 
         Room r17 = new Room(randomGold());
         r17.setRoomItem(new Weapon("ancient dwarf war axe", 10));

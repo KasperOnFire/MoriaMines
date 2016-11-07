@@ -1,0 +1,4 @@
+Player Kasper earned 28 Gold.
+Player test earned 18 Gold.
+Player jens earned 14 Gold.
+Player CHristopher earned 5 Gold.
