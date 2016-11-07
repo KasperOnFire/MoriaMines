@@ -124,7 +124,7 @@ public class Combat {
         }
         if (m.getMonsterGold() > 0) {
             System.out.println("you also find " + m.getMonsterGold() + " gold.");
-            p.setPlayerGold(p.getPlayerGold() + m.getMonsterGold());
+            p.addPlayerGold(m.getMonsterGold());
             m.setMonsterGold(0);
         }
 

@@ -50,6 +50,7 @@ public class Player {
         System.out.println("Damage: " + (getPlayerDmg() + getPlayerLvl()));
         System.out.println("Armor: " + getPlayerDef());
         System.out.println("Gold: " + getPlayerGold());
+        System.out.println("Inventory: " + inv.size() + " items");
         System.out.println("Level: " + getPlayerLvl());
         System.out.println("Exp: " + getPlayerExp() + "/100");
     }
@@ -71,6 +72,7 @@ public class Player {
         }
         System.out.println("What item would you like to equip?");
         String item = input.nextLine().toLowerCase();
+        int counter = 0;
         if (item != "quit") {
             for (Item j : inv) {
                 if (item.equals(j.getItemDesc())) {
@@ -78,18 +80,24 @@ public class Player {
                         Weapon mySword = (Weapon) j;
                         setPlayerDmg(mySword.getWeaponDmg());
                         System.out.println("You equip the " + mySword.getItemDesc() + ". Your damage is now " + (getPlayerDmg() + getPlayerLvl()));
+                        System.out.println("");
                         j.setEquipStatus(true);
                         break;
                     } else if (j instanceof Armor && !j.isEquipStatus()) {
                         Armor myArmor = (Armor) j;
                         setPlayerDef(getPlayerDef() + (myArmor.getArmorDefense()));
                         System.out.println("You equip the " + myArmor.getItemDesc() + ". Your defense is now " + getPlayerDef());
+                        System.out.println("");
                         j.setEquipStatus(true);
                         break;
                     } else if (item.equals(j.getItemDesc()) && j.isEquipStatus()) {
                         System.out.println("You already equipped that item!");
                     }
                 } else {
+                    counter++;
+                    if (counter == inv.size()) {
+                        System.out.println("You don't have that item!");
+                    }
                 }
             }
 
@@ -99,6 +107,7 @@ public class Player {
 
     // used for eating/drinking healing potions. Works the same way as equipCommand(); also Dynamic
     public void useCommand() {
+        int counter = 0;
         System.out.println("Inventory:");
         for (Item i : inv) {
             System.out.println(i.getItemDesc());
@@ -119,9 +128,56 @@ public class Player {
                     }
                 }
             } else {
-                System.out.println("You dont have that item!");
+                counter++;
+                if (counter == inv.size()) {
+                    System.out.println("You don't have that item!");
+                }
 
             }
+        }
+    }
+
+    /*The following 4 functions is what defines movement in the game
+    .
+    it sets the users room to the one north /south and so on.
+     */
+    public void goNorth() {
+        if (currentRoom.getRoomN() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomN();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
+    }
+
+    public void goSouth() {
+        if (currentRoom.getRoomS() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomS();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("There is only a rock wall here.");
+        }
+    }
+
+    public void goEast() {
+        if (currentRoom.getRoomE() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomE();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
+        }
+    }
+
+    public void goWest() {
+        if (currentRoom.getRoomW() != null) {
+            getCurrentRoom().setRoomSeen(true);
+            currentRoom = currentRoom.getRoomW();
+            currentRoom.enterRoom(this);
+        } else {
+            System.out.println("The stone wall does not allow for passage this way through.");
         }
     }
 
@@ -177,49 +233,6 @@ public class Player {
         inv.add(i);
     }
 
-    /*The following 4 functions is what defines movement in the game.
-    it sets the users room to the one north/south and so on of it.
-     */
-    public void goNorth() {
-        if (currentRoom.getRoomN() != null) {
-            getCurrentRoom().setRoomSeen(true);
-            currentRoom = currentRoom.getRoomN();
-            currentRoom.enterRoom(this);
-        } else {
-            System.out.println("The stone wall does not allow for passage this way through.");
-        }
-    }
-
-    public void goSouth() {
-        if (currentRoom.getRoomS() != null) {
-            getCurrentRoom().setRoomSeen(true);
-            currentRoom = currentRoom.getRoomS();
-            currentRoom.enterRoom(this);
-        } else {
-            System.out.println("The stone wall does not allow for passage this way through.");
-        }
-    }
-
-    public void goEast() {
-        if (currentRoom.getRoomE() != null) {
-            getCurrentRoom().setRoomSeen(true);
-            currentRoom = currentRoom.getRoomE();
-            currentRoom.enterRoom(this);
-        } else {
-            System.out.println("The stone wall does not allow for passage this way through.");
-        }
-    }
-
-    public void goWest() {
-        if (currentRoom.getRoomW() != null) {
-            getCurrentRoom().setRoomSeen(true);
-            currentRoom = currentRoom.getRoomW();
-            currentRoom.enterRoom(this);
-        } else {
-            System.out.println("The stone wall does not allow for passage this way through.");
-        }
-    }
-
     public Room getCurrentRoom() {
         return currentRoom;
     }
@@ -250,6 +263,10 @@ public class Player {
 
     public void setPlayerGold(int playerGold) {
         this.playerGold = playerGold;
+    }
+
+    public void addPlayerGold(int pold) {
+        playerGold = playerGold + pold;
     }
 
     public int getMonstersKilled() {
