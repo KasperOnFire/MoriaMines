@@ -15,6 +15,7 @@ public class FileHandler {
     static ArrayList<String> tempList = new ArrayList();
     static ArrayList<String> sortedList = new ArrayList();
 
+    //Runs all the methods that makes the highscorelist.
     public static void runHighscore(Player p) {
         StringWriter sw = new StringWriter();
         BufferedWriter bw = new BufferedWriter(sw);
@@ -28,6 +29,7 @@ public class FileHandler {
         printHighscore();
     }
 
+    //Reads highscore.txt and adds each line to templist.
     private static void fileToList() {
         try {
             for (String line : Files.readAllLines(Paths.get("highscore.txt"))) {
@@ -38,6 +40,10 @@ public class FileHandler {
         }
     }
 
+    /*Sorts the templist by order of the first int the sentence - playerGold. 
+    Adds the highest int first, and then repeats
+    could potentially be a RAMkiller if highscorelist was ~10mill lines long or something.
+    */
     private static void sortList() {
         for (int i = 0; i < tempList.size(); i++) {
             int holdValue = 0;
@@ -54,6 +60,7 @@ public class FileHandler {
         }
     }
 
+    //Adds the lines in sorted list to a buffer, so they can be written later.
     private static void addToBuffer(BufferedWriter bw) {
         try {
             for (String line3 : sortedList) {
@@ -66,6 +73,7 @@ public class FileHandler {
         }
     }
 
+    //Writes the sorted highscore file
     private static void writeToFile(StringWriter sw) {
         try (Writer osw = (new OutputStreamWriter(new FileOutputStream("highscore.txt"), "utf-8"))) {
             osw.write(sw.getBuffer().toString());
@@ -74,6 +82,7 @@ public class FileHandler {
         }
     }
 
+    //Prints the sorted highscore to the console.
     public static void printHighscore() {
         try {
             System.out.println("*** HIGHSCORES ***");

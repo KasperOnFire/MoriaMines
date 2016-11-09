@@ -17,15 +17,15 @@ public class GameControl {
     public Player getP() {
         return p;
     }
-// sets up the game, map and player.
 
+    // sets up the game, map and player.
     public void startGame() {
         System.out.println("Welcome to the Mines of Moria!");
         gameSetup();
         gameRun();
     }
-    // asks if the player would like to play again.
 
+    // asks if the player would like to play again.
     public void endGame() {
         System.out.println("Do you want to play again? This will discard your highscore!");
         String s = input.nextLine().toLowerCase();
@@ -144,6 +144,7 @@ public class GameControl {
         gameOver();
     }
 
+    //Prints out the list of commands.
     private void help() {
         System.out.println("\nList of commands:");
         System.out.println("use/heal: puts you in to use use mode. Write \"use\", press enter, then write the item you'd like to use.");
@@ -160,6 +161,7 @@ public class GameControl {
         System.out.println("quit: ends the game.\n");
     }
 
+    //triggers when a condition for game end is triggered. Prints 3 lines of text.
     private void gameOver() {
         System.out.println("Game Over!\n");
         System.out.println("you had " + p.getPlayerGold() + " Gold.");
@@ -167,11 +169,12 @@ public class GameControl {
 
     }
 
+    //Generate a random number between 1 and 30. Used when adding gold to the room in createMap().
     private int randomGold() {
         return ThreadLocalRandom.current().nextInt(1, 30 + 1);
     }
 
-    // Generates a static map. Also adds gold, items and monsters to the rooms.
+    //Generates a static map. Also adds gold, items and monsters to the rooms.
     public void createMap() {
         Item bone = new Item("broken bone");
         Monster goblin = new Monster("mine goblin", 18, 4, bone, 2);
