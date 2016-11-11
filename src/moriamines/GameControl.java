@@ -112,6 +112,7 @@ public class GameControl {
                 case "stats":
                     p.playerStats();
                     break;
+                case "take item":
                 case "pick up":
                     if (p.getCurrentRoom().getRoomItem() == null) {
                         System.out.println("There is no item here");

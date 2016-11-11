@@ -122,7 +122,7 @@ public class Player {
                     if (use.equals(j.getItemDesc())) {
                         if (j instanceof Potion) {
                             Potion myPotion = (Potion) j;
-                            myPotion.restoreHealth(myPotion);
+                            myPotion.restoreHealth(myPotion, this);
                             break;
                         }
                     }
